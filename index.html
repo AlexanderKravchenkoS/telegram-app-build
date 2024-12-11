@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="main.js"></script>
     <title>Unity Web Player | Telegram_app</title>
   </head>
   <body style="text-align: center; padding: 0; border: 0; margin: 0;">
@@ -38,13 +39,29 @@
         matchWebGLToCanvasSize: true
       }).then((unity_instance) => {
         window.UNITY_INSTANCE = unity_instance;
-        
         const initData = window.Telegram.WebApp.initData;
-        logging(initData);
+        const params = new URLSearchParams(initData);
+        // const initData = "user=%7B%22id%22%3A473553081%2C%22first_name%22%3A%22Alexandr%22%2C%22last_name%22%3A%22Kravchenko%22%2C%22username%22%3A%22aleksandr_kravchenko01%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%2C%22photo_url%22%3A%22https%3A%5C%2F%5C%2Ft.me%5C%2Fi%5C%2Fuserpic%5C%2F320%5C%2FhFMExNRKwsgpxDfpeRyFw_Pls6SikioX0Il62MyeqdQ.svg%22%7D&chat_instance=-7576424754045604166&chat_type=sender&auth_date=1733916619&signature=FINg5a_awPsmaNfkKYaNdd6DHJfVEPrfJVEkQaEU2WhVAURHebnaSMcaoJrnosAK9f2H_gxZPBNP_jS9DpKpBg&hash=ade3d3a60733316914ec6fc9a9d8f385565d1aabe6a53527cf1d1c5f4a9b15b5";
+        
+        let user = params.get("user");
+        let auth_date = params.get("auth_date");
+        let hash = params.get("hash");
+        let signature = params.get("signature");
+        
+        var new_data = {
+          user:user,
+          auth_date:auth_date,
+          hash:hash,
+          signature: signature
+        };
+
+        let new_data_json = JSON.stringify(new_data);
+        logging(new_data_json);
+
         window.UNITY_INSTANCE.SendMessage(
           "WebBridge",
           "SetWebAppUserData",
-          initData
+          new_data_json
         );
 
         logging("Complete");
