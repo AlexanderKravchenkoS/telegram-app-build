@@ -26,43 +26,47 @@
         console.log(`TG APP - FRONT - ${value}`)
       }
 
-      createUnityInstance(document.querySelector("#unity-canvas"), {
-        arguments: [],
-        dataUrl: "Build/telegram-app-build.data",
-        frameworkUrl: "Build/telegram-app-build.framework.js",
-        // workerUrl: "Build/",
-        codeUrl: "Build/telegram-app-build.wasm",
-        // symbolsUrl: "Build/",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
-        productName: "Telegram_app",
-        productVersion: "1.0",
-        matchWebGLToCanvasSize: true
-      }).then((unity_instance) => {
-        window.UNITY_INSTANCE = unity_instance;
+      logging(window.Telegram.WebApp.initData);
+      logging(window.Telegram.WebApp.initDataUnsafe);
+      logging(window.Telegram.WebApp.initDataUnsafe.hash);
+
+      // createUnityInstance(document.querySelector("#unity-canvas"), {
+      //   arguments: [],
+      //   dataUrl: "Build/telegram-app-build.data",
+      //   frameworkUrl: "Build/telegram-app-build.framework.js",
+      //   // workerUrl: "Build/",
+      //   codeUrl: "Build/telegram-app-build.wasm",
+      //   // symbolsUrl: "Build/",
+      //   streamingAssetsUrl: "StreamingAssets",
+      //   companyName: "DefaultCompany",
+      //   productName: "Telegram_app",
+      //   productVersion: "1.0",
+      //   matchWebGLToCanvasSize: true
+      // }).then((unity_instance) => {
+      //   window.UNITY_INSTANCE = unity_instance;
         
-        const initData = window.Telegram.WebApp.initData;
-        const params = new URLSearchParams(initData);
-        const userId = params.get("user");
-        const authDate = params.get("auth_date");
-        // alert(userId);
-        // alert(authDate);
+      //   const initData = window.Telegram.WebApp.initData;
+      //   const params = new URLSearchParams(initData);
+      //   const userId = params.get("user");
+      //   const authDate = params.get("auth_date");
+      //   // alert(userId);
+      //   // alert(authDate);
 
-        // Перебор всех параметров
-        // for (const [key, value] of params.entries()) {
-        //   alert(`${key}: ${value}`);
-        // }
+      //   // Перебор всех параметров
+      //   // for (const [key, value] of params.entries()) {
+      //   //   alert(`${key}: ${value}`);
+      //   // }
 
-        logging(initData);
+      //   logging(initData);
         
-        window.UNITY_INSTANCE.SendMessage(
-          "WebBridge",
-          "SetWebAppUserData",
-          initData
-        );
+      //   window.UNITY_INSTANCE.SendMessage(
+      //     "WebBridge",
+      //     "SetWebAppUserData",
+      //     initData
+      //   );
 
-        logging("Complete");
-      });
+      //   logging("Complete");
+      // });
 
     </script>
   </body>
