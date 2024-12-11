@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <title>Unity Web Player | Telegram_app</title>
+  </head>
+  <body style="text-align: center; padding: 0; border: 0; margin: 0;">
+    <canvas id="unity-canvas" width=600 height=1200 tabindex="-1" style="width: 600px; height: 1200px; background: #231F20"></canvas>
+    <script src="Build/telegram-app-build.loader.js"></script>
+    <script>
+      var meta = document.createElement('meta');
+      meta.name = 'viewport';
+      meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+      document.getElementsByTagName('head')[0].appendChild(meta);
+
+      var canvas = document.querySelector("#unity-canvas");
+      canvas.style.width = "100%";
+      canvas.style.height = "100%";
+      canvas.style.position = "fixed";
+
+      document.body.style.textAlign = "left";
+
+      function logging(value){
+        console.log(`TG APP - FRONT - ${value}`)
+      }
+
+      createUnityInstance(document.querySelector("#unity-canvas"), {
+        arguments: [],
+        dataUrl: "Build/telegram-app-build.data",
+        frameworkUrl: "Build/telegram-app-build.framework.js",
+        // workerUrl: "Build/",
+        codeUrl: "Build/telegram-app-build.wasm",
+        // symbolsUrl: "Build/",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DefaultCompany",
+        productName: "Telegram_app",
+        productVersion: "1.0",
+        matchWebGLToCanvasSize: true
+      }).then((unity_instance) => {
+        window.UNITY_INSTANCE = unity_instance;
+        
+        const initData = window.Telegram.WebApp.initData;
+        const params = new URLSearchParams(initData);
+        const userId = params.get("user");
+        const authDate = params.get("auth_date");
+        // alert(userId);
+        // alert(authDate);
+
+        // Перебор всех параметров
+        // for (const [key, value] of params.entries()) {
+        //   alert(`${key}: ${value}`);
+        // }
+        
+        window.UNITY_INSTANCE.SendMessage(
+          "WebBridge",
+          "SetWebAppUserData",
+          userId
+        );
+
+        logging("Complete");
+      });
+
+    </script>
+  </body>
+</html>
